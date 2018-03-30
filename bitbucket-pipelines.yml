@@ -1,0 +1,22 @@
+# This is a sample build configuration for all languages.
+# Check our guides at https://confluence.atlassian.com/x/VYk8Lw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+# image: docker-image:tag
+#image: benedwards/docker-salesforce
+image: amkor/docker-salesforce
+
+pipelines:
+  default:
+    - step:
+        script:
+          - echo "Deploying on $SF_SERVERURL as $SF_USERNAME"
+          - ant -buildfile build/build.xml deploy -Dsf.username=$SF_USERNAME -Dsf.password=$SF_PASSWORD -Dsf.serverUrl=$SF_SERVERURL -Dsf.checkOnly=$SF_CHECKONLY -Dsf.testLevel=$SF_TESTLEVEL
+          
+  custom:
+    SAT:
+      - step:
+          script:
+            - echo "This script runs only on commit to the master branch."        
+            - ant -buildfile build/build.xml deploy -Dsf.username=$SF_USERNAME2 -Dsf.password=$SF2_PASSWORD -Dsf.serverUrl=$SF_SERVERURL -Dsf.checkOnly=$SF_CHECKONLY -Dsf.testLevel=$SF_TESTLEVEL
